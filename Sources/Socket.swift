@@ -257,13 +257,7 @@ public class Socket {
     public func push(topic: String, event: String, payload: Payload, ref: String? = nil, joinRef: String? = nil) {
         
         let callback: (() throws -> ()) = {
-            var body: [Any] = []
-            if let safeJoinRef = joinRef { body.append(safeJoinRef) }
-            if let safeRef = ref { body.append(safeRef) }
-            body.append(topic)
-            body.append(event)
-            body.append(payload)
-            
+            var body: [Any] = [joinRef, ref, topic, event, payload]
             let data = try JSONSerialization.data(withJSONObject: body, options: JSONSerialization.WritingOptions())
             
             self.logItems("push", "Sending \(String(data: data, encoding: String.Encoding.utf8) ?? "")" )
