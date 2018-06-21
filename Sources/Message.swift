@@ -57,16 +57,16 @@ public class Message {
         do {
             guard let jsonObject
                 = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
-                    as? Payload
+                    as? Array<Any>
                 else { return nil }
             
-            self.ref = jsonObject["ref"] as? String ?? ""
-            self.joinRef = jsonObject["join_ref"] as? String
+            self.joinRef = jsonObject[0] as? String
+            self.ref = jsonObject[1] as? String ?? ""
             
             if
-                let topic = jsonObject["topic"] as? String,
-                let event = jsonObject["event"] as? String,
-                let payload = jsonObject["payload"] as? Payload {
+                let topic = jsonObject[2] as? String,
+                let event = jsonObject[3] as? String,
+                let payload = jsonObject[4] as? Payload {
                 
                 self.topic = topic
                 self.event = event
