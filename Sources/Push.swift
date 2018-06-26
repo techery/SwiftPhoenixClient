@@ -226,12 +226,12 @@ public class Push {
     /// Triggers an event to be sent though the Channel
     func trigger(_ status: String, payload: Payload) {
         /// If there is no ref event, then there is nothing to trigger on the channel
-        guard let refEvent = self.refEvent else { return }
+        guard let refEvent = self.refEvent, let ref = self.ref else { return }
         
         var mutPayload = payload
         mutPayload["status"] = status
         
-        let message = Message(ref: refEvent, payload: mutPayload)
+        let message = Message(ref: ref, event: refEvent, payload: mutPayload)
         self.channel.trigger(message)
     }
 }
